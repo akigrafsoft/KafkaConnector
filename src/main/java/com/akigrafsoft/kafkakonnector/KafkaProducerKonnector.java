@@ -29,7 +29,7 @@ public class KafkaProducerKonnector extends Konnector {
 					"config must be KafkaProducerConfiguration");
 
 		KafkaProducerConfiguration l_config = (KafkaProducerConfiguration) config;
-		m_serversList = l_config.serversList;
+		m_serversList = l_config.getServersList();
 	}
 
 	@Override

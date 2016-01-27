@@ -63,10 +63,10 @@ public class KafkaConsumerKonnector extends Konnector {
 	@Override
 	protected void doLoadConfig(KonnectorConfiguration config) {
 		KafkaConsumerConfiguration cfg = (KafkaConsumerConfiguration) config;
-		this.m_zookeeper = cfg.zookeeper;
-		this.m_groupId = cfg.groupId;
-		this.m_topic = cfg.topic;
-		this.m_numberOfThreads = cfg.numberOfThreads;
+		this.m_zookeeper = cfg.getZookeeper();
+		this.m_groupId = cfg.getGroupId();
+		this.m_topic = cfg.getTopic();
+		this.m_numberOfThreads = cfg.getNumberOfThreads();
 	}
 
 	@Override
@@ -78,10 +78,10 @@ public class KafkaConsumerKonnector extends Konnector {
 		props.put("zookeeper.session.timeout.ms", "400");
 		props.put("zookeeper.sync.time.ms", "200");
 		props.put("auto.commit.interval.ms", "1000");
-	
+
 		m_consumer = kafka.consumer.Consumer
 				.createJavaConsumerConnector(new ConsumerConfig(props));
-		
+
 		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
 		topicCountMap.put(m_topic, new Integer(m_numberOfThreads));
 		Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = m_consumer

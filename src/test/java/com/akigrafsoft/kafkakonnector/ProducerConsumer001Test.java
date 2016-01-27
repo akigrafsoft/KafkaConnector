@@ -8,11 +8,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.akigrafsoft.knetthreads.Dispatcher;
+import com.akigrafsoft.knetthreads.Endpoint;
 import com.akigrafsoft.knetthreads.ExceptionAuditFailed;
 import com.akigrafsoft.knetthreads.ExceptionDuplicate;
 import com.akigrafsoft.knetthreads.FlowProcessContext;
 import com.akigrafsoft.knetthreads.Message;
-import com.akigrafsoft.knetthreads.Endpoint;
 import com.akigrafsoft.knetthreads.RequestEnum;
 import com.akigrafsoft.knetthreads.konnector.Konnector;
 import com.akigrafsoft.knetthreads.konnector.KonnectorDataobject;
@@ -126,7 +126,7 @@ public class ProducerConsumer001Test {
 
 	private void setupProducer() {
 		KafkaProducerConfiguration cfg = new KafkaProducerConfiguration();
-		cfg.serversList = "localhost:9092,localhost:9093,localhost:9094";
+		cfg.setServersList("localhost:9092,localhost:9093,localhost:9094");
 
 		try {
 			assertEquals(Konnector.CommandResult.Success,
@@ -177,10 +177,10 @@ public class ProducerConsumer001Test {
 
 	private void setupConsumer() {
 		KafkaConsumerConfiguration cfg = new KafkaConsumerConfiguration();
-		cfg.zookeeper = "localhost:2181";
-		cfg.groupId = "group3";
-		cfg.numberOfThreads = 1;
-		cfg.topic = "my-replicated-topic";
+		cfg.setZookeeper("localhost:2181");
+		cfg.setGroupId("group3");
+		cfg.setNumberOfThreads(1);
+		cfg.setTopic("my-replicated-topic");
 
 		try {
 			assertEquals(Konnector.CommandResult.Success,
