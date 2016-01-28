@@ -61,6 +61,11 @@ public class KafkaConsumerKonnector extends Konnector {
 	}
 
 	@Override
+	public Class<? extends KonnectorConfiguration> getConfigurationClass() {
+		return KafkaConsumerConfiguration.class;
+	}
+
+	@Override
 	protected void doLoadConfig(KonnectorConfiguration config) {
 		KafkaConsumerConfiguration cfg = (KafkaConsumerConfiguration) config;
 		this.m_zookeeper = cfg.getZookeeper();

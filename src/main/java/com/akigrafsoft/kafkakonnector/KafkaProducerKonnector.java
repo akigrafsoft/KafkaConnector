@@ -22,6 +22,11 @@ public class KafkaProducerKonnector extends Konnector {
 	}
 
 	@Override
+	public Class<? extends KonnectorConfiguration> getConfigurationClass() {
+		return KafkaProducerConfiguration.class;
+	}
+
+	@Override
 	protected void doLoadConfig(KonnectorConfiguration config) {
 
 		if (!(config instanceof KafkaProducerConfiguration))
