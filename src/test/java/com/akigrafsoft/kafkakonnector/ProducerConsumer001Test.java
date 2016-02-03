@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.akigrafsoft.knetthreads.Dispatcher;
@@ -32,8 +33,7 @@ cp config/server.properties config/server-1.properties
 cp config/server.properties config/server-2.properties
 </code> Update : config/server.properties: <code>
 delete.topic.enable=true
-</code>
- * config/server-1.properties: <code>
+</code> config/server-1.properties: <code>
 broker.id=1
 port=9093
 log.dir=/tmp/kafka-logs-1
@@ -76,6 +76,7 @@ Topic:my-replicated-topic	PartitionCount:1	ReplicationFactor:3	Configs:
  * @author kmoyse
  * 
  */
+@Ignore
 public class ProducerConsumer001Test {
 	static String PRODUCER_NAME = "Produce";
 	static Konnector m_producer;
@@ -129,8 +130,7 @@ public class ProducerConsumer001Test {
 		cfg.setServersList("localhost:9092,localhost:9093,localhost:9094");
 
 		try {
-			assertEquals(Konnector.CommandResult.Success,
-					m_producer.configure(cfg));
+			assertEquals(Konnector.CommandResult.Success, m_producer.configure(cfg));
 		} catch (ExceptionAuditFailed e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -140,30 +140,25 @@ public class ProducerConsumer001Test {
 		try {
 			Endpoint nap = new Endpoint(PRODUCER_NAME) {
 				@Override
-				public KonnectorRouter getKonnectorRouter(Message message,
-						KonnectorDataobject dataobject) {
+				public KonnectorRouter getKonnectorRouter(Message message, KonnectorDataobject dataobject) {
 					return new KonnectorRouter() {
-						public Konnector resolveKonnector(Message message,
-								KonnectorDataobject dataobject) {
+						public Konnector resolveKonnector(Message message, KonnectorDataobject dataobject) {
 							return m_producer;
 						}
 					};
 				}
 
 				@Override
-				public RequestEnum classifyInboundMessage(Message message,
-						KonnectorDataobject dataobject) {
+				public RequestEnum classifyInboundMessage(Message message, KonnectorDataobject dataobject) {
 					received = new Received(message, dataobject);
-					System.out.println(PRODUCER_NAME
-							+ "|classifyInboundMessage|"
-							+ dataobject.inboundBuffer);
+					System.out.println(PRODUCER_NAME + "|classifyInboundMessage|" + dataobject.inboundBuffer);
 					// leave null as this is fake anyway
 					return null;
 				}
 			};
 			nap.setDispatcher(new Dispatcher() {
-				public FlowProcessContext getContext(Message message,
-						KonnectorDataobject dataobject, RequestEnum request) {
+				public FlowProcessContext getContext(Message message, KonnectorDataobject dataobject,
+						RequestEnum request) {
 					return null;
 				}
 			});
@@ -183,8 +178,7 @@ public class ProducerConsumer001Test {
 		cfg.setTopic("my-replicated-topic");
 
 		try {
-			assertEquals(Konnector.CommandResult.Success,
-					m_consumer.configure(cfg));
+			assertEquals(Konnector.CommandResult.Success, m_consumer.configure(cfg));
 		} catch (ExceptionAuditFailed e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -194,30 +188,25 @@ public class ProducerConsumer001Test {
 		try {
 			Endpoint nap = new Endpoint(CONSUMER_NAME) {
 				@Override
-				public KonnectorRouter getKonnectorRouter(Message message,
-						KonnectorDataobject dataobject) {
+				public KonnectorRouter getKonnectorRouter(Message message, KonnectorDataobject dataobject) {
 					return new KonnectorRouter() {
-						public Konnector resolveKonnector(Message message,
-								KonnectorDataobject dataobject) {
+						public Konnector resolveKonnector(Message message, KonnectorDataobject dataobject) {
 							return m_consumer;
 						}
 					};
 				}
 
 				@Override
-				public RequestEnum classifyInboundMessage(Message message,
-						KonnectorDataobject dataobject) {
+				public RequestEnum classifyInboundMessage(Message message, KonnectorDataobject dataobject) {
 					received = new Received(message, dataobject);
-					System.out.println(CONSUMER_NAME
-							+ "|classifyInboundMessage|"
-							+ dataobject.inboundBuffer);
+					System.out.println(CONSUMER_NAME + "|classifyInboundMessage|" + dataobject.inboundBuffer);
 					// leave null as this is fake anyway
 					return null;
 				}
 			};
 			nap.setDispatcher(new Dispatcher() {
-				public FlowProcessContext getContext(Message message,
-						KonnectorDataobject dataobject, RequestEnum request) {
+				public FlowProcessContext getContext(Message message, KonnectorDataobject dataobject,
+						RequestEnum request) {
 					return null;
 				}
 			});
@@ -249,8 +238,7 @@ public class ProducerConsumer001Test {
 		for (int i = 0; i < 5; i++) {
 			l_do.outboundBuffer = "my message test" + i;
 			m_producer.handle(l_do);
-			assertEquals("check DO status", l_do.executionStatus,
-					KonnectorDataobject.ExecutionStatus.PASS);
+			assertEquals("check DO status", l_do.executionStatus, KonnectorDataobject.ExecutionStatus.PASS);
 		}
 
 		// Utils.sleep(1000);

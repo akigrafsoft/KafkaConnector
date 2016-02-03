@@ -30,8 +30,7 @@ public class KafkaProducerKonnector extends Konnector {
 	protected void doLoadConfig(KonnectorConfiguration config) {
 
 		if (!(config instanceof KafkaProducerConfiguration))
-			throw new IllegalArgumentException(
-					"config must be KafkaProducerConfiguration");
+			throw new IllegalArgumentException("config must be KafkaProducerConfiguration");
 
 		KafkaProducerConfiguration l_config = (KafkaProducerConfiguration) config;
 		m_serversList = l_config.getServersList();
@@ -44,8 +43,7 @@ public class KafkaProducerKonnector extends Konnector {
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, m_serversList);
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 				"org.apache.kafka.common.serialization.StringSerializer");
-		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-				"org.apache.kafka.common.serialization.StringSerializer");
+		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 		props.put(ProducerConfig.CLIENT_ID_CONFIG, "my-producer");
 		// props.put("request.required.acks", "1");
 		m_producer = new KafkaProducer<String, String>(props);
@@ -63,11 +61,10 @@ public class KafkaProducerKonnector extends Konnector {
 		final ProducerRecord<String, String> data;
 
 		if (l_dataobject.key != null) {
-			data = new ProducerRecord<String, String>(l_dataobject.topic,
-					l_dataobject.key, l_dataobject.outboundBuffer);
-		} else {
-			data = new ProducerRecord<String, String>(l_dataobject.topic,
+			data = new ProducerRecord<String, String>(l_dataobject.topic, l_dataobject.key,
 					l_dataobject.outboundBuffer);
+		} else {
+			data = new ProducerRecord<String, String>(l_dataobject.topic, l_dataobject.outboundBuffer);
 		}
 
 		m_producer.send(data);

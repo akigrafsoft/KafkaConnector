@@ -37,8 +37,7 @@ public class KafkaConsumerKonnector extends Konnector {
 		private KafkaStream<byte[], byte[]> m_stream;
 		private int m_threadNumber;
 
-		public ConsumerTest(KafkaStream<byte[], byte[]> a_stream,
-				int a_threadNumber) {
+		public ConsumerTest(KafkaStream<byte[], byte[]> a_stream, int a_threadNumber) {
 			m_threadNumber = a_threadNumber;
 			m_stream = a_stream;
 		}
@@ -50,8 +49,7 @@ public class KafkaConsumerKonnector extends Konnector {
 				// + new String(it.next().message()));
 				//
 				Message message = new Message();
-				KonnectorDataobject l_dataobject = new KonnectorDataobject(
-						message);
+				KonnectorDataobject l_dataobject = new KonnectorDataobject(message);
 				l_dataobject.inboundBuffer = new String(it.next().message());
 				injectMessageInApplication(message, l_dataobject);
 			}
@@ -84,13 +82,11 @@ public class KafkaConsumerKonnector extends Konnector {
 		props.put("zookeeper.sync.time.ms", "200");
 		props.put("auto.commit.interval.ms", "1000");
 
-		m_consumer = kafka.consumer.Consumer
-				.createJavaConsumerConnector(new ConsumerConfig(props));
+		m_consumer = kafka.consumer.Consumer.createJavaConsumerConnector(new ConsumerConfig(props));
 
 		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
 		topicCountMap.put(m_topic, new Integer(m_numberOfThreads));
-		Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = m_consumer
-				.createMessageStreams(topicCountMap);
+		Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = m_consumer.createMessageStreams(topicCountMap);
 		List<KafkaStream<byte[], byte[]>> streams = consumerMap.get(m_topic);
 
 		// now launch all the threads
@@ -124,12 +120,10 @@ public class KafkaConsumerKonnector extends Konnector {
 			m_executor.shutdown();
 		try {
 			if (!m_executor.awaitTermination(5000, TimeUnit.MILLISECONDS)) {
-				System.out
-						.println("Timed out waiting for consumer threads to shut down, exiting uncleanly");
+				System.out.println("Timed out waiting for consumer threads to shut down, exiting uncleanly");
 			}
 		} catch (InterruptedException e) {
-			System.out
-					.println("Interrupted during shutdown, exiting uncleanly");
+			System.out.println("Interrupted during shutdown, exiting uncleanly");
 		} finally {
 			m_executor = null;
 			this.setStopped();
