@@ -49,6 +49,7 @@ public class KafkaProducerKonnector extends Konnector {
 		m_producer = new KafkaProducer<String, String>(props);
 
 		this.setStarted();
+		this.setAvailable();
 
 		return CommandResult.Success;
 	}
@@ -80,6 +81,7 @@ public class KafkaProducerKonnector extends Konnector {
 
 		m_producer = null;
 
+		this.setUnavailable();
 		this.setStopped();
 		return CommandResult.Success;
 	}

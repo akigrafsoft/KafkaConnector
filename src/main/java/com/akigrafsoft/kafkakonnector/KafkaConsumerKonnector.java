@@ -102,6 +102,7 @@ public class KafkaConsumerKonnector extends Konnector {
 		}
 
 		this.setStarted();
+		this.setAvailable();
 		return CommandResult.Success;
 	}
 
@@ -126,6 +127,7 @@ public class KafkaConsumerKonnector extends Konnector {
 			System.out.println("Interrupted during shutdown, exiting uncleanly");
 		} finally {
 			m_executor = null;
+			this.setUnavailable();
 			this.setStopped();
 		}
 
