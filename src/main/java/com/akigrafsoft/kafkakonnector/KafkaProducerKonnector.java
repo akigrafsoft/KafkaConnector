@@ -1,3 +1,9 @@
+/**
+ * Open-source, by AkiGrafSoft.
+ *
+ * $Id:  $
+ *
+ **/
 package com.akigrafsoft.kafkakonnector;
 
 import java.util.Properties;
