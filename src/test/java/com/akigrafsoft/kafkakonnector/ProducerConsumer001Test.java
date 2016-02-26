@@ -156,7 +156,7 @@ public class ProducerConsumer001Test {
 					return null;
 				}
 			};
-			nap.setDispatcher(new Dispatcher() {
+			nap.setDispatcher(new Dispatcher<RequestEnum>("foo") {
 				public FlowProcessContext getContext(Message message, KonnectorDataobject dataobject,
 						RequestEnum request) {
 					return null;
@@ -204,7 +204,7 @@ public class ProducerConsumer001Test {
 					return null;
 				}
 			};
-			nap.setDispatcher(new Dispatcher() {
+			nap.setDispatcher(new Dispatcher<RequestEnum>("foo") {
 				public FlowProcessContext getContext(Message message, KonnectorDataobject dataobject,
 						RequestEnum request) {
 					return null;
