@@ -17,6 +17,7 @@ import com.akigrafsoft.knetthreads.Message;
 import com.akigrafsoft.knetthreads.RequestEnum;
 import com.akigrafsoft.knetthreads.konnector.Konnector;
 import com.akigrafsoft.knetthreads.konnector.KonnectorDataobject;
+import com.akigrafsoft.knetthreads.routing.EndpointRouter;
 import com.akigrafsoft.knetthreads.routing.KonnectorRouter;
 
 /**
@@ -139,7 +140,7 @@ public class ProducerConsumer001Test {
 		}
 
 		try {
-			Endpoint nap = new Endpoint(PRODUCER_NAME) {
+			final Endpoint l_ep = new Endpoint(PRODUCER_NAME) {
 				@Override
 				public KonnectorRouter getKonnectorRouter(Message message, KonnectorDataobject dataobject) {
 					return new KonnectorRouter() {
@@ -157,13 +158,18 @@ public class ProducerConsumer001Test {
 					return null;
 				}
 			};
-			nap.setDispatcher(new Dispatcher<RequestEnum>("foo") {
+			l_ep.setDispatcher(new Dispatcher<RequestEnum>("foo") {
 				public FlowProcessContext getContext(Message message, KonnectorDataobject dataobject,
 						RequestEnum request) {
 					return null;
 				}
 			});
-			m_consumer.setEndpoint(nap);
+			m_consumer.setEndpointRouter(new EndpointRouter() {
+				@Override
+				public Endpoint resolveKonnector(Message message, KonnectorDataobject dataobject) {
+					return l_ep;
+				}
+			});
 		} catch (ExceptionDuplicate e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -187,7 +193,7 @@ public class ProducerConsumer001Test {
 		}
 
 		try {
-			Endpoint nap = new Endpoint(CONSUMER_NAME) {
+			final Endpoint l_ep = new Endpoint(CONSUMER_NAME) {
 				@Override
 				public KonnectorRouter getKonnectorRouter(Message message, KonnectorDataobject dataobject) {
 					return new KonnectorRouter() {
@@ -205,13 +211,18 @@ public class ProducerConsumer001Test {
 					return null;
 				}
 			};
-			nap.setDispatcher(new Dispatcher<RequestEnum>("foo") {
+			l_ep.setDispatcher(new Dispatcher<RequestEnum>("foo") {
 				public FlowProcessContext getContext(Message message, KonnectorDataobject dataobject,
 						RequestEnum request) {
 					return null;
 				}
 			});
-			m_consumer.setEndpoint(nap);
+			m_consumer.setEndpointRouter(new EndpointRouter() {
+				@Override
+				public Endpoint resolveKonnector(Message message, KonnectorDataobject dataobject) {
+					return l_ep;
+				}
+			});
 		} catch (ExceptionDuplicate e) {
 			e.printStackTrace();
 			fail(e.getMessage());
